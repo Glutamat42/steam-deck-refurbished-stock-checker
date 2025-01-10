@@ -44,12 +44,8 @@ Before using this script, ensure the following dependencies are installed:
 
 This script is provided "as is" for personal use. Be aware of website scraping policies and use responsibly.
 
-## Docker Running
+## Docker Running (Alternative with sleep)
 
 ```sh
-docker build -t python-cron-job .
-```
-
-```sh
-docker run -d --name python-cron-container python-cron-job
+docker compose up
 ```

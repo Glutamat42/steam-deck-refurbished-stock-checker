@@ -8,7 +8,7 @@ import time
 import requests
 
 # Configurations
-webhook_url = "YOUR_DISCORD_WEBHOOK_URL"
+webhook_url = "<YOUR_DISCORD_WEBHOOK_URL>"
 page_url = "https://store.steampowered.com/sale/steamdeckrefurbished/"
 debug = False  # Set to True to always send a notification with a screenshot
 

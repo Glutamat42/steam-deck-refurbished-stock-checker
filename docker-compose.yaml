@@ -1,0 +1,8 @@
+version: "3.8"
+
+services:
+  python-cron-job:
+    build: .
+    container_name: python-cron-container
+    image: python-cron-job
+    restart: unless-stopped
