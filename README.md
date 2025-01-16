@@ -44,8 +44,44 @@ Before using this script, ensure the following dependencies are installed:
 
 This script is provided "as is" for personal use. Be aware of website scraping policies and use responsibly.
 
-## Docker Running (Alternative with sleep)
+## Alternative Setup with docker and docker compose
+
+### Place your Discord URL
+
+In checker.py, replace the placeholder webhook_url with your actual Discord webhook URL:
+
+```python
+webhook_url = "<YOUR_DISCORD_WEBHOOK_URL>"
+```
+
+### Select your desired steam decks to scrape
+
+In checker.py, leave uncommented the steam decks you desire to scrape:
+
+```python
+product_titles = [
+    "Steam Deck 512GB OLED - Valve Certified Refurbished",
+    "Steam Deck 1TB OLED - Valve Certified Refurbished",
+    # "Steam Deck 64 GB LCD - Valve Certified Refurbished",
+    # "Steam Deck 256 GB LCD - Valve Certified Refurbished",
+    # "Steam Deck 512 GB LCD - Valve Certified Refurbished",
+]
+```
+
+### Start the Container
 
 ```sh
-docker compose up
+docker compose up --build -d
+```
+
+### Stop the Container
+
+```sh
+docker compose down
+```
+
+### Check Logs
+
+```sh
+docker exec -it sd-notifier cat /app/checker.log
 ```

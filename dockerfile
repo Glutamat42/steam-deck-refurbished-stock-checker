@@ -1,24 +1,26 @@
 FROM python:3.10
 
-# Install necessary dependencies
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     chromium-driver \
     curl \
-    cron \
-    && rm -rf /var/lib/apt/lists/*
+    nano \
+    cron
+RUN rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
+# Set working directory
+WORKDIR /app
+
+# Copy application files
+COPY checker.py /app/
 COPY requirements.txt /app/
+
+# Install dependencies using pip as root (default user)
 RUN pip install -r /app/requirements.txt
 
-WORKDIR /app
-COPY checker.py /app/
+# Copy crontab and set permissions
+COPY crontab /etc/cron.d/crontab
+RUN chmod 644 /etc/cron.d/crontab
 
-# Copy the entrypoint script into the container
-COPY entrypoint.sh /app/entrypoint.sh
-
-# Make the script executable
-RUN chmod +x /app/entrypoint.sh
-
-# Use the entrypoint script to start the job
-ENTRYPOINT ["/app/entrypoint.sh"]
+# Run cron in the foreground
+ENTRYPOINT ["cron", "-f"]

@@ -10,6 +10,13 @@ import requests
 # Configurations
 webhook_url = "<YOUR_DISCORD_WEBHOOK_URL>"
 page_url = "https://store.steampowered.com/sale/steamdeckrefurbished/"
+product_titles = [
+    "Steam Deck 512GB OLED - Valve Certified Refurbished",
+    "Steam Deck 1TB OLED - Valve Certified Refurbished",
+    # "Steam Deck 64 GB LCD - Valve Certified Refurbished",
+    # "Steam Deck 256 GB LCD - Valve Certified Refurbished",
+    # "Steam Deck 512 GB LCD - Valve Certified Refurbished",
+]
 debug = False  # Set to True to always send a notification with a screenshot
 
 # Set up Selenium WebDriver options
@@ -25,19 +32,13 @@ try:
     driver.get(page_url)
 
     # Wait for page to load dynamic content
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, "body")))
+    WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.TAG_NAME, "body")))
 
     # Extra wait to ensure all dynamic content is fully loaded
-    time.sleep(5)
+    time.sleep(3)
 
     # Set the window size to capture the full page
     driver.set_window_size(1920, 1500)
-
-    # Locate the product titles and their corresponding "Add to Cart" buttons
-    product_titles = [
-        "Steam Deck 512GB OLED - Valve Certified Refurbished",
-        "Steam Deck 1TB OLED - Valve Certified Refurbished",
-    ]
     
     product_found = False
     for title in product_titles:
@@ -64,7 +65,7 @@ try:
     if product_found or debug:
         print("One of the Steam Deck models is now in stock!")
         message = {
-            "content": "One of the Steam Deck models (512GB or 1TB OLED) is now in stock!",
+            "content": f"One of the Steam Deck models is now in stock! Check it out here: <{page_url}>",
         }
         files = {
             "file": ("screenshot.png", open(screenshot_path, "rb"))

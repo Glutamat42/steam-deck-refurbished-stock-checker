@@ -1,8 +1,7 @@
-version: "3.8"
-
 services:
-  python-cron-job:
-    build: .
-    container_name: python-cron-container
-    image: python-cron-job
+  sd-notifier:
+    container_name: sd-notifier
+    build:
+      context: .
+      dockerfile: dockerfile
     restart: unless-stopped
