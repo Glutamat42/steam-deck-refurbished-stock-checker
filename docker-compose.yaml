@@ -1,7 +1,10 @@
 services:
   sd-notifier:
     container_name: sd-notifier
-    build:
-      context: .
-      dockerfile: dockerfile
+    image: ghcr.io/glutamat42/steam-deck-refurbished-stock-checker:latest
     restart: unless-stopped
+    environment:
+      DISCORD_WEBHOOK_URL: "YOUR_DISCORD_WEBHOOK_URL_HERE"
+      CRON_SCHEDULE: "*/5 * * * *"  # Check every 5 minutes (default)
+      PRODUCT_TITLES: "Steam Deck 512GB OLED - Valve Certified Refurbished,Steam Deck 1TB OLED - Valve Certified Refurbished"
+      # DEBUG: "false"

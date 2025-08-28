@@ -6,18 +6,17 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 import requests
+import os
 
 # Configurations
-webhook_url = "<YOUR_DISCORD_WEBHOOK_URL>"
-page_url = "https://store.steampowered.com/sale/steamdeckrefurbished/"
-product_titles = [
-    "Steam Deck 512GB OLED - Valve Certified Refurbished",
-    "Steam Deck 1TB OLED - Valve Certified Refurbished",
-    # "Steam Deck 64 GB LCD - Valve Certified Refurbished",
-    # "Steam Deck 256 GB LCD - Valve Certified Refurbished",
-    # "Steam Deck 512 GB LCD - Valve Certified Refurbished",
-]
-debug = False  # Set to True to always send a notification with a screenshot
+webhook_url = os.getenv("DISCORD_WEBHOOK_URL", "<YOUR_DISCORD_WEBHOOK_URL>")
+page_url = os.getenv("PAGE_URL", "https://store.steampowered.com/sale/steamdeckrefurbished/")
+
+# Parse product titles from environment variable (comma-separated)
+product_titles_env = os.getenv("PRODUCT_TITLES", "Steam Deck 512GB OLED - Valve Certified Refurbished,Steam Deck 1TB OLED - Valve Certified Refurbished")
+product_titles = [title.strip() for title in product_titles_env.split(",") if title.strip()]
+
+debug = os.getenv("DEBUG", "false").lower() in ("true", "1", "yes")
 
 # Set up Selenium WebDriver options
 options = Options()
