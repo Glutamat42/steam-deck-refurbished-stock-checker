@@ -21,7 +21,7 @@ RUN pip install -r /app/requirements.txt
 # Create a script to generate crontab from environment variable
 RUN echo '#!/bin/bash\n\
 CRON_SCHEDULE=${CRON_SCHEDULE:-"*/5 * * * *"}\n\
-echo "$CRON_SCHEDULE root PATH=/usr/local/bin:$PATH python3 /app/checker.py >> /app/checker.log 2>&1" > /etc/cron.d/crontab\n\
+echo "$CRON_SCHEDULE root PATH=/usr/local/bin:$PATH python3 /app/checker.py" > /etc/cron.d/crontab\n\
 echo "" >> /etc/cron.d/crontab\n\
 chmod 644 /etc/cron.d/crontab\n\
 exec cron -f' > /app/start.sh && chmod +x /app/start.sh

@@ -7,6 +7,14 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 import requests
 import os
+import logging
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
 
 # Configurations
 webhook_url = os.getenv("DISCORD_WEBHOOK_URL", "<YOUR_DISCORD_WEBHOOK_URL>")
@@ -23,11 +31,12 @@ options = Options()
 options.add_argument('--headless')  # Run in headless mode
 options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
-service = Service("/usr/bin/chromedriver")  # Update with the correct path to your ChromeDriver
+service = Service("/usr/bin/chromedriver")
 
 # Start WebDriver
 driver = webdriver.Chrome(service=service, options=options)
 try:
+    logging.info("Loading page...")
     driver.get(page_url)
 
     # Wait for page to load dynamic content
@@ -51,6 +60,7 @@ try:
             # Check if the "Add to Cart" button is present
             if add_to_cart_button.is_displayed():
                 product_found = True
+                logging.warning(f"STOCK FOUND: {title}")
                 break
         except Exception as e:
             # If any exception occurs (e.g., product not found), continue checking other products
@@ -62,7 +72,8 @@ try:
 
     # Send a notification if any of the products have an "Add to Cart" button visible
     if product_found or debug:
-        print("One of the Steam Deck models is now in stock!")
+        logging.warning("Steam Deck is in stock! Sending notification")
+            
         message = {
             "content": f"One of the Steam Deck models is now in stock! Check it out here: <{page_url}>",
         }
@@ -70,8 +81,14 @@ try:
             "file": ("screenshot.png", open(screenshot_path, "rb"))
         }
         response = requests.post(webhook_url, data=message, files=files)
+        
+        if response.status_code == 200:
+            logging.info("Discord notification sent successfully")
+        else:
+            logging.error(f"Discord notification failed: {response.status_code}")
     else:
-        print("Neither Steam Deck model is in stock!\nNo need to notify.")
+        logging.info("No Steam Deck models in stock")
 
 finally:
     driver.quit()
+    logging.info("Check completed")

@@ -34,22 +34,6 @@ Configure the script by editing the environment variables in the provided `docke
 - `Steam Deck 256 GB LCD - Valve Certified Refurbished`
 - `Steam Deck 512 GB LCD - Valve Certified Refurbished`
 
-## Docker Commands
-
-```sh
-# Start the container
-docker compose up --build -d
-
-# Stop the container
-docker compose down
-
-# View logs
-docker compose logs -f sd-notifier
-
-# Check application logs
-docker exec -it sd-notifier cat /app/checker.log
-```
-
 ## Discord Webhook Setup
 
 1. In Discord, go to Server Settings → Integrations → Webhooks
